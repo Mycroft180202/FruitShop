@@ -1,5 +1,6 @@
 package com.example.fruit_api.service;
 
+import com.example.fruit_api.dto.ProductDto;
 import com.example.fruit_api.exception.ResourceNotFoundException;
 import com.example.fruit_api.models.Product;
 import com.example.fruit_api.repository.ProductRepository;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -14,8 +16,10 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public List<Product> findAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDto> findAllProducts() {
+        return productRepository.findAll().stream()
+                .map(ProductDto::new)
+                .collect(Collectors.toList());
     }
 
     public Product findProductById(Long id) {

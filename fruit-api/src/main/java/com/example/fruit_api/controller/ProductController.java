@@ -1,5 +1,6 @@
 package com.example.fruit_api.controller;
 
+import com.example.fruit_api.dto.ProductDto;
 import com.example.fruit_api.models.Product;
 import com.example.fruit_api.service.ProductService;
 import jakarta.validation.Valid;
@@ -18,8 +19,8 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productService.findAllProducts();
+    public ResponseEntity<List<ProductDto>> getAllProducts() {
+        List<ProductDto> products = productService.findAllProducts();
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
