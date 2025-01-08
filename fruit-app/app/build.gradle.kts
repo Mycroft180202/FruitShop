@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.fruitapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.fruitapp"
@@ -59,6 +59,27 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    //Add thư viện
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    // Gson
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    // RecyclerView
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+
+    // CardView (Optional)
+    implementation("androidx.cardview:cardview:1.0.0")
+
+    // Glide (Optional - for image loading)
+    implementation("com.github.bumptech.glide:glide:4.14.2")
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
+    annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
