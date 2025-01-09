@@ -1,4 +1,4 @@
-package com.example.fruitapp;
+package com.example.fruitapp.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.fruitapp.R;
 import com.example.fruitapp.model.Product;
 import java.util.List;
 

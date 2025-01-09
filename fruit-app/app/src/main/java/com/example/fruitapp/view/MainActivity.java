@@ -1,13 +1,16 @@
-package com.example.fruitapp.main;
+package com.example.fruitapp.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.example.fruitapp.ProductAdapter;
+import com.example.fruitapp.adapter.ProductAdapter;
 import com.example.fruitapp.R;
 import com.example.fruitapp.model.Product;
 import com.example.fruitapp.network.ApiService;
@@ -59,5 +62,26 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("API Error", "Failed to fetch products", t);
             }
         });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchProducts(); // Gọi lại phương thức fetchProducts để cập nhật danh sách sản phẩm
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.register_menu_item) {
+            Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
