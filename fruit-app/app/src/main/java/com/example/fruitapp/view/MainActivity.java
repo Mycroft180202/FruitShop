@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView productsRecyclerView;
     private ProductAdapter productAdapter;
     private List<Product> productList = new ArrayList<>();
+    public static boolean invalidateMenu = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,15 +65,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onResume() {
         super.onResume();
-        fetchProducts(); // Gọi lại phương thức fetchProducts để cập nhật danh sách sản phẩm
+        fetchProducts(); // Cập nhật danh sách sản phẩm khi quay lại MainActivity
+        if (invalidateMenu) {
+            invalidateOptionsMenu(); // Cập nhật menu
+            invalidateMenu = false; // Reset lại biến
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        SharedPreferences sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
+
+        MenuItem loginMenuItem = menu.findItem(R.id.login_menu_item);
+        MenuItem registerMenuItem = menu.findItem(R.id.register_menu_item);
+        MenuItem logoutMenuItem = menu.findItem(R.id.logout_menu_item);
+
+        // Ẩn/hiện menu item dựa trên trạng thái đăng nhập
+        loginMenuItem.setVisible(!isLoggedIn);
+        registerMenuItem.setVisible(!isLoggedIn);
+        logoutMenuItem.setVisible(isLoggedIn);
+
         return true;
     }
 
@@ -81,7 +100,31 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
             startActivity(intent);
             return true;
+        } else if (item.getItemId() == R.id.logout_menu_item) {
+            logoutUser();
+            return true;
+        } else if (item.getItemId() == R.id.login_menu_item) {
+            // Chuyển đến LoginActivity
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logoutUser() {
+        // Xóa trạng thái đăng nhập trong SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("isLoggedIn");
+        editor.apply();
+
+        // Chuyển về LoginActivity
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish(); // Đóng MainActivity
+
+        // Cập nhật menu
+        invalidateOptionsMenu();
     }
 }
