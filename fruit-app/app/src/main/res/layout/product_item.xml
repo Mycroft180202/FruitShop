@@ -30,6 +30,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Category: " />
+        <Button
+            android:id="@+id/editButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"/>
         <!-- Thêm ImageView nếu bạn muốn hiển thị ảnh -->
 
     </LinearLayout>

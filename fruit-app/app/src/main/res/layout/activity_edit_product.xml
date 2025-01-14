@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".view.EditProductActivity">
+
+    <EditText
+        android:id="@+id/editProductNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="71dp"
+        android:hint="Product Name"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editProductDescriptionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="69dp"
+        android:hint="Description"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editProductPriceEditText"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:hint="Price"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/editProductQuantityEditText"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:hint="Quantity in Stock"
+        android:inputType="number" />
+
+    <Spinner
+        android:id="@+id/editProductCategorySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="58dp" />
+
+    <ImageView
+        android:id="@+id/editProductImageView"
+        android:layout_width="132dp"
+        android:layout_height="99dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/placeholder_image" />
+
+    <Button
+        android:id="@+id/saveChangesProductButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="Save Changes" />
+
+</LinearLayout>

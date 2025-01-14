@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         productsRecyclerView = findViewById(R.id.productsRecyclerView);
         productsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        productAdapter = new ProductAdapter(productList);
+        productAdapter = new ProductAdapter(this,productList);
         productsRecyclerView.setAdapter(productAdapter);
 
         fetchProducts();
