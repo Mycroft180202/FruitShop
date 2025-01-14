@@ -1,7 +1,7 @@
 package com.example.fruit_api.service;
 
 import com.example.fruit_api.dto.ProductDto;
-import com.example.fruit_api.exception.ResourceNotFoundException;
+import com.example.fruit_api.common.api.exception.ResourceNotFoundException;
 import com.example.fruit_api.models.Category;
 import com.example.fruit_api.models.Product;
 import com.example.fruit_api.repository.CategoryRepository;

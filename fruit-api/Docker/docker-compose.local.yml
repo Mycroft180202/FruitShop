@@ -1,0 +1,49 @@
+services:
+
+  database:
+    image: postgres:${POSTGRES_VERSION}
+    volumes:
+      - ./volumes/database:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${KEYCLOAK_DATABASE_NAME}
+      - POSTGRES_USER=${KEYCLOAK_DATABASE_USER}
+      - POSTGRES_PASSWORD=${KEYCLOAK_DATABASE_PASS}
+    ports:
+      - "5433:5432"
+    networks:
+      - keycloak-network
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:${KEYCLOAK_VERSION}
+    volumes:
+      - ./keycloak/import:/opt/keycloak/data/import
+      - ./keycloak/themes:/opt/keycloak/themes
+    ports:
+      - '8989:8080'
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://database:5432/${KEYCLOAK_DATABASE_NAME}?user=${KEYCLOAK_DATABASE_USER}
+      KC_DB_PASSWORD: ${KEYCLOAK_DATABASE_PASS}
+      KC_HOSTNAME: ${KEYCLOAK_HOSTNAME}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN_USER}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASS}
+    depends_on:
+      - database
+    command:
+      - 'start-dev'
+      - '--import-realm'
+    networks:
+      - keycloak-network
+
+networks:
+  keycloak-network:
+    driver: bridge
+
+
+
+
+
+
+
+
+

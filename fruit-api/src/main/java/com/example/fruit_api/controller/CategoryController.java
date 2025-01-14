@@ -1,7 +1,6 @@
 package com.example.fruit_api.controller;
 
 import com.example.fruit_api.dto.CategoryDto;
-import com.example.fruit_api.exception.ResourceNotFoundException;
 import com.example.fruit_api.models.Category;
 import com.example.fruit_api.service.CategoryService;
 import jakarta.validation.Valid;
