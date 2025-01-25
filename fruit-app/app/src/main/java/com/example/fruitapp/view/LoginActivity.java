@@ -1,125 +1,148 @@
 package com.example.fruitapp.view;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.fruitapp.R;
-import com.example.fruitapp.model.ApiResponse;
-import com.example.fruitapp.model.User;
-import com.example.fruitapp.network.ApiService;
-import com.example.fruitapp.network.RetrofitClient;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText usernameEditText;
-    private EditText passwordEditText;
-    private Button loginButton;
-    private TextView registerTextView;
+    private EditText txtEmail, txtPassword;
+    private LinearLayout loginButton;
 
-    private ApiService apiService;
+    // **URL API LOGIN BACKEND CỦA BẠN (THAY ĐỔI CHO PHÙ HỢP)**
+    private static final String KEYCLOAK_SERVER_URL = "http://192.168.1.12:8080/api/auth/login"; // Ví dụ: "http://your-backend-api:8080/api/auth/login"
+
+    private final OkHttpClient client = new OkHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        apiService = RetrofitClient.getApiService();
+        ImageView backgroundImageView = findViewById(R.id.r7ch6hrxa8ni);
+        ImageView logoImageView = findViewById(R.id.r5vs71k7r26c);
 
-        usernameEditText = findViewById(R.id.usernameEditText);
-        passwordEditText = findViewById(R.id.passwordEditText);
-        loginButton = findViewById(R.id.loginButton);
-        registerTextView = findViewById(R.id.registerTextView);
+        Glide.with(this)
+                .load(R.drawable.bk_login)
+                .into(backgroundImageView);
+
+        Glide.with(this)
+                .load(R.drawable.carot_login)
+                .into(logoImageView);
+
+        txtEmail = findViewById(R.id.txt_Email);
+        txtPassword = findViewById(R.id.txt_Password);
+        loginButton = findViewById(R.id.rztd9equtk3);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginUser();
-            }
-        });
+                String username = txtEmail.getText().toString();
+                String password = txtPassword.getText().toString();
 
-        registerTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Hiển thị màn hình đăng ký (tạo RegisterActivity nếu chưa có)
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
+                if (username.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Vui lòng nhập email và mật khẩu", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                performLoginWithOkHttp(username, password);
             }
         });
     }
 
-    private void loginUser() {
-        String username = usernameEditText.getText().toString().trim();
-        String password = passwordEditText.getText().toString().trim();
+    private void performLoginWithOkHttp(String username, String password) {
+        RequestBody formBody = new FormBody.Builder()
+                // **CHỈ GỬI username và password CHO BACKEND API**
+                .add("username", username)
+                .add("password", password)
+                .build();
 
-        if (username.isEmpty() || password.isEmpty()) {
-            Toast.makeText(LoginActivity.this, "Please enter username and password", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        Request request = new Request.Builder()
+                // **URL API LOGIN BACKEND - KHÔNG TRỰC TIẾP ĐẾN KEYCLOAK**
+                .url(KEYCLOAK_SERVER_URL) // Sử dụng KEYCLOAK_SERVER_URL (trỏ đến API Backend Login)
+                .post(formBody)
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .build();
 
-        // Tạo một đối tượng User tạm thời với username và password
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-
-        // Thực hiện cuộc gọi API để đăng nhập
-        Call<ApiResponse> call = apiService.loginUser(user);
-        call.enqueue(new Callback<ApiResponse>() {
+        client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                if (response.isSuccessful()) {
-                    ApiResponse apiResponse = response.body();
-                    if (apiResponse.isSuccess()) {
-                        // Xử lý đăng nhập thành công
-                        Toast.makeText(LoginActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
-
-                        // Lưu trạng thái đăng nhập
-                        SharedPreferences sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putBoolean("isLoggedIn", true);
-                        editor.apply();
-
-                        // Cập nhật menu
-                        MainActivity.invalidateMenu = true;
-
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish(); // Đóng LoginActivity
-                    } else {
-                        // Xử lý lỗi đăng nhập
-                        Toast.makeText(LoginActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call call, IOException e) {
+                Log.e("LoginActivity", "OkHttp onFailure: " + e.getMessage());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LoginActivity.this, "Lỗi kết nối mạng hoặc đăng nhập thất bại.", Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    // Xử lý lỗi từ server (không success)
-                    try {
-                        String errorBody = response.errorBody().string();
-                        Toast.makeText(LoginActivity.this, "Login failed: " + errorBody, Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        Log.e("LoginActivity", "Error reading error body", e);
-                    }
-                }
+                });
             }
 
-
             @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
-                // Xử lý lỗi kết nối
-                Log.e("LoginActivity", "Error: " + t.getMessage());
-                Toast.makeText(LoginActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onResponse(Call call, Response response) throws IOException {
+                final String responseBody = response.body().string();
+                final int responseCode = response.code();
+
+                if (response.isSuccessful()) {
+                    try {
+                        JSONObject jsonResponse = new JSONObject(responseBody);
+                        final String accessToken = jsonResponse.getString("access_token");
+                        final String refreshToken = jsonResponse.getString("refresh_token");
+
+                        Log.d("LoginActivity", "OkHttp Login successful!");
+                        Log.d("LoginActivity", "Access Token: " + accessToken);
+                        Log.d("LoginActivity", "Refresh Token: " + refreshToken);
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                                // **TODO: Xử lý token (ví dụ: lưu vào SharedPreferences, chuyển sang màn hình chính)**
+                                // **Ví dụ: Chuyển sang MainActivity sau khi đăng nhập thành công**
+                                // Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                // startActivity(intent);
+                                // finish(); // Đóng LoginActivity
+                            }
+                        });
+
+                    } catch (JSONException e) {
+                        Log.e("LoginActivity", "JSONException parsing response: " + e.getMessage());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(LoginActivity.this, "Lỗi xử lý dữ liệu từ server.", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                } else {
+                    Log.e("LoginActivity", "OkHttp Login failed with response code: " + responseCode + ", body: " + responseBody);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(LoginActivity.this, "Đăng nhập thất bại. Vui lòng kiểm tra email và mật khẩu.", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
             }
         });
     }

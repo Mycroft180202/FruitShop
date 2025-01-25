@@ -6,20 +6,17 @@ plugins {
 android {
     namespace = "com.example.fruitapp"
     compileSdk = 35
-
     defaultConfig {
         applicationId = "com.example.fruitapp"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -51,7 +48,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -60,21 +56,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    //Add thư viện
-    // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    // Gson
-    implementation("com.google.code.gson:gson:2.10.1")
 
-    // RecyclerView
-    implementation("androidx.recyclerview:recyclerview:1.3.2")
-
-    // CardView (Optional)
-    implementation("androidx.cardview:cardview:1.0.0")
-
-    // Glide (Optional - for image loading)
-    implementation("com.github.bumptech.glide:glide:4.14.2")
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
@@ -82,7 +64,20 @@ dependencies {
     implementation(libs.androidx.annotation)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation("androidx.recyclerview:recyclerview:1.3.2") // RecyclerView
+    implementation("androidx.cardview:cardview:1.0.0")       // CardView (Optional)
+
+    // Image Loading (Glide)
+    implementation("com.github.bumptech.glide:glide:4.14.2")
     annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
+
+    // Retrofit & Gson
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
