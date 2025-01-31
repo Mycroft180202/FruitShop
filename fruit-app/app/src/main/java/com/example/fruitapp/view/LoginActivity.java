@@ -1,5 +1,6 @@
 package com.example.fruitapp.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,8 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText txtEmail, txtPassword;
     private LinearLayout loginButton;
 
-    // **URL API LOGIN BACKEND CỦA BẠN (THAY ĐỔI CHO PHÙ HỢP)**
-    private static final String KEYCLOAK_SERVER_URL = "http://192.168.1.12:8080/api/auth/login"; // Ví dụ: "http://your-backend-api:8080/api/auth/login"
+    private static final String KEYCLOAK_SERVER_URL = "http://192.168.1.14:8080/api/auth/login"; // Ví dụ: "http://your-backend-api:8080/api/auth/login"
 
     private final OkHttpClient client = new OkHttpClient();
 
@@ -119,9 +119,9 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                                 // **TODO: Xử lý token (ví dụ: lưu vào SharedPreferences, chuyển sang màn hình chính)**
                                 // **Ví dụ: Chuyển sang MainActivity sau khi đăng nhập thành công**
-                                // Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                // startActivity(intent);
-                                // finish(); // Đóng LoginActivity
+                                Intent intent = new Intent(LoginActivity.this, ExploreActivity.class);
+                                startActivity(intent);
+                                finish(); // Đóng LoginActivity
                             }
                         });
 

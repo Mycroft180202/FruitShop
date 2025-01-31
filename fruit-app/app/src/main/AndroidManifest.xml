@@ -20,6 +20,9 @@
             android:name=".view.LoginActivity"
             android:exported="false" />
         <activity
+            android:name=".view.ExploreActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.Welcome"
             android:exported="true">
             <intent-filter>
