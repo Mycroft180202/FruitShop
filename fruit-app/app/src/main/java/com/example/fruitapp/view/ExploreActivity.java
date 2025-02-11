@@ -18,18 +18,18 @@ public class ExploreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_explore);
 
         // Load images using Glide
-        Glide.with(this).load(R.drawable.v6);
-        Glide.with(this).load(R.drawable.img5);
-        Glide.with(this).load(R.drawable.img3);
-        Glide.with(this).load(R.drawable.img2);
-        Glide.with(this).load(R.drawable.img6);
-        Glide.with(this).load(R.drawable.img7);
-        Glide.with(this).load(R.drawable.img1);
-        Glide.with(this).load(R.drawable.i1);
-        Glide.with(this).load(R.drawable.i7);
-        Glide.with(this).load(R.drawable.i4);
-        Glide.with(this).load(R.drawable.i5);
-        Glide.with(this).load(R.drawable.i2);
+        Glide.with(this).load(R.drawable.searchicon2);
+        Glide.with(this).load(R.drawable.vegetable);
+        Glide.with(this).load(R.drawable.oil);
+        Glide.with(this).load(R.drawable.meat);
+        Glide.with(this).load(R.drawable.bread);
+        Glide.with(this).load(R.drawable.milk);
+        Glide.with(this).load(R.drawable.drink);
+        Glide.with(this).load(R.drawable.shopicon);
+        Glide.with(this).load(R.drawable.searchicon);
+        Glide.with(this).load(R.drawable.shopicon1);
+        Glide.with(this).load(R.drawable.favouriteicon);
+        Glide.with(this).load(R.drawable.usericon);
 
         // Set up TextWatcher for EditText
         EditText editText1 = findViewById(R.id.r1qgvuyepuxx);

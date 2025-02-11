@@ -25,7 +25,6 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/public/**").permitAll()
-                        // **DÒNG CODE ĐÃ SỬA - ĐÚNG ENDPOINT API LOGIN**
                         .requestMatchers("/api/auth/login").permitAll() // Cho phép truy cập KHÔNG XÁC THỰC vào endpoint API Login
                         .anyRequest().authenticated()
                 )

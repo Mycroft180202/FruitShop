@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText txtEmail, txtPassword;
     private LinearLayout loginButton;
 
-    private static final String KEYCLOAK_SERVER_URL = "http://192.168.1.14:8080/api/auth/login"; // Ví dụ: "http://your-backend-api:8080/api/auth/login"
+    private static final String KEYCLOAK_SERVER_URL = "http://192.168.137.1:8080/api/auth/login"; // Ví dụ: "http://your-backend-api:8080/api/auth/login"
 
     private final OkHttpClient client = new OkHttpClient();
 

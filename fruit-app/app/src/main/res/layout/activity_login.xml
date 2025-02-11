@@ -165,7 +165,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
                 android:gravity="center"
-                android:background="@drawable/cr20b53b175"
+                android:background="@drawable/greenbox3"
                 android:layout_marginVertical="20dp"
                 android:orientation="vertical">
                 <TextView
